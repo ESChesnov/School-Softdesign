@@ -5,7 +5,7 @@ import android.util.Log;
 /**
  * Зарефакторить код логера в соответствии с данными на лекции рекомендациями, исспользовать подход DRY Don’t repeat yourself (не повторяй себя) - 
  * т.е. избегаем повторения уже ранее написанного кода + Javadoc, 
- * логер должен исспользовать различные уровни вывода логов (Verbose, debug, info, error, warn, assert ).???
+ * логер должен исспользовать различные уровни вывода логов (Verbose, debug, info, error, warn, assert ).??? O_o
  */
 public class Lg {
 
@@ -14,55 +14,55 @@ public class Lg {
 
     private static boolean shouldLog() {
 //        return BuildConfig.IS_LOGCAT_LOGGER_ENABLED;
-//        return true;
-        return false;
+        return true;
     }
 
-    public static void i (String tag, String text){
+    /**уровень Verbose
+     */
+    public static void v(String tag, String msg) {
+        log(Log.VERBOSE, tag, msg);
+    }
+
+    /**уровень Debug
+     */
+    public static void d(String tag, String msg) {
+        log(Log.DEBUG, tag, msg);
+    }
+
+    /**уровень Info
+     */
+    public static void i(String tag, String msg) {
+        log(Log.INFO, tag, msg);
+    }
+
+    /**уровень Error
+     */
+    public static void e(String tag, String msg) {
+        log(Log.ERROR, tag, msg);
+    }
+
+    /**уровень Warn
+     */
+    public static void w(String tag, String msg) {
+        log(Log.WARN, tag, msg);
+    }
+
+    /**уровень Assert
+     */
+    public static void a(String tag, String msg) {
+        log(Log.ASSERT, tag, msg);
+    }
+
+    private static void log (int lvl, String tag, String msg){
         if (shouldLog()) {
-            if (text.length() > LOGCAT_BUFFER_SIZE){
-                String s = text;
-                while (s.length() > LOGCAT_BUFFER_SIZE){
-                    String s1 = s.substring(0, LOGCAT_BUFFER_SIZE);
-                    s = s.substring(LOGCAT_BUFFER_SIZE);
-                    Log.i(PREFIX + tag, s1);
-                }
-                Log.i(PREFIX + tag, s);
-            } else {
-                Log.i(PREFIX + tag, text);
+            String str = msg;
+            while (str.length() > LOGCAT_BUFFER_SIZE){
+                String substr = str.substring(0, LOGCAT_BUFFER_SIZE);
+                str = substr.substring(LOGCAT_BUFFER_SIZE);
+                Log.println(lvl, PREFIX + tag, str);
             }
+            Log.println(lvl, PREFIX + tag, str);
         }
     }
 
-    public static void e (String tag, String text) {
-        if (shouldLog()) {
-            if (text.length() > LOGCAT_BUFFER_SIZE){
-                String s = text;
-                while (s.length() > LOGCAT_BUFFER_SIZE){
-                    String s1 = s.substring(0, LOGCAT_BUFFER_SIZE);
-                    s = s.substring(LOGCAT_BUFFER_SIZE);
-                    Log.e(PREFIX + tag, s1);
-                }
-                Log.e(PREFIX + tag, s);
-            } else {
-                Log.e(PREFIX + tag, text);
-            }
-        }
-    }
-
-    public static void w (String tag, String text) {
-        if (shouldLog()) {
-            if (text.length() > LOGCAT_BUFFER_SIZE){
-                String s = text;
-                while (s.length() > LOGCAT_BUFFER_SIZE){
-                    String s1 = s.substring(0, LOGCAT_BUFFER_SIZE);
-                    s = s.substring(LOGCAT_BUFFER_SIZE);
-                    Log.w(PREFIX + tag, s1);
-                }
-                Log.w(PREFIX + tag, s);
-            } else {
-                Log.w(PREFIX + tag, text);
-            }
-        }
-    }
 }
